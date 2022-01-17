@@ -1,9 +1,12 @@
 import Link from 'next/link';
-import Layout from '../components/Layout';
-import DefaultLayout from '../components/DefaultLayout/DefaultLayout';
+import { GetStaticProps, InitialProps, NextPage } from 'next';
+
+/** components */
+import DefaultLayout from '~/components/DefaultLayout/DefaultLayout';
+
+/** i18n */
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { GetStaticProps, InitialProps, NextPage } from 'next';
 
 interface IIndexPageProps extends InitialProps {}
 

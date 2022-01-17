@@ -1,12 +1,18 @@
 import { GetStaticProps, InitialProps, NextPage } from 'next';
 import Link from 'next/link';
 
-import { User } from '../../interfaces';
-import { sampleUserData } from '../../utils/sample-data';
-import Layout from '../../components/Layout';
-import List from '../../components/List';
-import DefaultLayout from '../../components/DefaultLayout/DefaultLayout';
+/** utils */
+import { sampleUserData } from '~/utils/sample-data';
+
+/** i18n */
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+/** components */
+import List from '~/components/List';
+import DefaultLayout from '~/components/DefaultLayout/DefaultLayout';
+
+/** interface */
+import { User } from '~/interfaces';
 
 interface IWithStaticProps extends InitialProps {
   items: User[];

@@ -1,8 +1,11 @@
 import Link from 'next/link';
-import Layout from '../../components/Layout';
-import DefaultLayout from '../../components/DefaultLayout/DefaultLayout';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps, InitialProps, NextPage } from 'next';
+
+/** components */
+import DefaultLayout from '~/components/DefaultLayout/DefaultLayout';
+
+/** i18n */
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface IAboutPage extends InitialProps {}
 

@@ -1,12 +1,17 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 
-import { User } from '../../interfaces';
-import { sampleUserData } from '../../utils/sample-data';
-import Layout from '../../components/Layout';
-import ListDetail from '../../components/ListDetail';
-import DefaultLayout from '../../components/DefaultLayout/DefaultLayout';
-import useTest from '../../hooks/useTest';
-import api from '../../api/api';
+/** interfaces */
+import { User } from '~/interfaces';
+
+/** utils */
+import { sampleUserData } from '~/utils/sample-data';
+
+/** components */
+import ListDetail from '~/components/ListDetail';
+import DefaultLayout from '~/components/DefaultLayout/DefaultLayout';
+
+/** i18n */
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 type Props = {
   item?: User;
@@ -38,24 +43,38 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = sampleUserData.map((user) => ({
     params: { id: user.id.toString() },
   }));
-
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
-  return { paths, fallback: false };
+  return {
+    paths,
+    fallback: 'blocking',
+  };
 };
 
-// This function gets called at build time on server-side.
-// It won't be called on client-side, so you can even do
-// direct database queries.
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
+  const items: User[] = sampleUserData;
+
   try {
     const id = params?.id;
     const item = sampleUserData.find((data) => data.id === Number(id));
 
     // By returning { props: item }, the StaticPropsDetail component
     // will receive `item` as a prop at build time
-    return { props: { item } };
+    return {
+      props: {
+        title: 'user 페이지',
+        ...(await serverSideTranslations(locale, ['common'])),
+        item,
+        // Will be passed to the page component as props
+      },
+    };
   } catch (err: any) {
-    return { props: { errors: err.message } };
+    return {
+      props: {
+        title: 'user 페이지',
+        ...(await serverSideTranslations(locale, ['common'])),
+        errors: err.message,
+      },
+    };
   }
 };

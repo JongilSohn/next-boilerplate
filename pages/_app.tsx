@@ -1,10 +1,6 @@
 import React, { useMemo } from 'react';
 import App, { AppProps, AppContext } from 'next/app';
 import Head from 'next/head';
-import '../styles/variables.less';
-
-// import '../styles/globals.css';
-// import 'antd/dist/antd.css';
 
 // i18n
 import { appWithTranslation } from 'next-i18next';
@@ -14,9 +10,10 @@ import { RecoilRoot } from 'recoil';
 import useSWR, { SWRConfig } from 'swr';
 
 // styles
-import { globalStyles } from '../styles/globals';
+import '~/styles/variables.less';
+import { globalStyles } from '../src/styles/globals';
 import { ThemeProvider } from '@emotion/react';
-import theme from '../styles/theme';
+import theme from '../src/styles/theme';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   console.log(pageProps);

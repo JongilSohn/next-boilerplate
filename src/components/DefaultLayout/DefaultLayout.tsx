@@ -10,7 +10,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // i18n
 // import { useTranslation } from '../../i18n';
 import { useTranslation } from 'next-i18next';
-import Header from 'components/Header';
+import Header from 'src/components/Header';
 
 const {
   Content,

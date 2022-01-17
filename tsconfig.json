@@ -13,8 +13,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["src/*"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "styles/test.tsㅌ"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/styles/test.tsㅌ"],
   "exclude": ["node_modules"]
 }
