@@ -1,16 +1,20 @@
-import React, { FunctionComponent, ReactNode, useMemo } from 'react';
-import { Layout, Menu, Breadcrumb, Select } from 'antd';
-import Link from 'next/link';
+import React, { FunctionComponent, ReactNode } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-// pages/index.js
+/** antd */
+import { Layout, Menu, Breadcrumb } from 'antd';
+
+/** emotion */
+import styled from '@emotion/styled';
+
+/** i18n */
+import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-// i18n
-// import { useTranslation } from '../../i18n';
-import { useTranslation } from 'next-i18next';
-import Header from 'src/components/Header';
+/** components */
+import Header from '~/components/Header';
+import Footer from '../Footer';
 
 const {
   Content,
@@ -28,12 +32,6 @@ const defaultStyle = {
   height: '100%',
 };
 
-const menuStyle = {
-  // marginLeft: 20,
-  width: '100%',
-  display: 'flex',
-};
-
 const DefaultLayout: FunctionComponent<IDefaultLayoutProps> = ({
   children,
   title = '스토어링크 Next',
@@ -42,7 +40,7 @@ const DefaultLayout: FunctionComponent<IDefaultLayoutProps> = ({
   const router = useRouter();
 
   return (
-    <Layout style={defaultStyle}>
+    <LayoutWrapper style={{ minHeight: '100vh' }} className="layout-container">
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -51,24 +49,16 @@ const DefaultLayout: FunctionComponent<IDefaultLayoutProps> = ({
           content="minimum-scale=1, initial-scale=1, width=device-width, maximum-scale=1"
         />
       </Head>
-      <Layout.Header className="header" style={{ display: 'flex' }}>
-        <Header />
-      </Layout.Header>
-      <Layout>
-        <Layout style={{ padding: '0 24px 24px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}></Breadcrumb>
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
-            {children}
-          </Content>
-        </Layout>
+      <Layout className="ant-layout">
+        <Layout.Header className="header">
+          <Header />
+        </Layout.Header>
+        <Content className="ant-content">{children}</Content>
+        <Layout.Footer>
+          <Footer />
+        </Layout.Footer>
       </Layout>
-    </Layout>
+    </LayoutWrapper>
   );
 };
 
@@ -80,5 +70,34 @@ export async function getStaticProps({ locale }) {
     },
   };
 }
+
+const LayoutWrapper = styled(Layout)`
+  background: none !important;
+
+  .ant-layout {
+    height: 100%;
+    background: none;
+    min-height: 100vh;
+  }
+
+  .ant-content {
+    background: none;
+    height: 100%;
+    padding: 24px;
+    margin: 0;
+  }
+
+  .ant-layout-header {
+    background: none;
+    height: 100%;
+    padding: 0;
+  }
+
+  .ant-layout-footer {
+    background: none;
+    height: 100%;
+    padding: 0;
+  }
+`;
 
 export default DefaultLayout;

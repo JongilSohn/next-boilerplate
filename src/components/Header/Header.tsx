@@ -1,52 +1,42 @@
-import React, { FunctionComponent, ReactNode, useMemo } from 'react';
-import { Layout, Menu, Breadcrumb, Select } from 'antd';
+import React, { FunctionComponent, ReactNode, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+
+/** antd */
+import { Layout, Menu, Breadcrumb, Select } from 'antd';
+
+/** emotion */
 import styled from '@emotion/styled';
 
-// pages/index.js
+/** i18n */
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
-// i18n
-// import { useTranslation } from '../../i18n';
 import { useTranslation } from 'next-i18next';
 
-const {
-  Content,
-  // Sider
-} = Layout;
+const { Content } = Layout;
 
 const { Item } = Menu;
 
-interface IHeaderProps {
-  children?: ReactNode;
-  title?: string;
-}
+interface IHeaderProps {}
 
-const defaultStyle = {
-  height: '100%',
-};
-
-const menuStyle = {
-  // marginLeft: 20,
-  width: '100%',
-  display: 'flex',
-};
-
-const Header: FunctionComponent<IHeaderProps> = ({ children, title = '스토어링크 Next' }) => {
+const Header: FunctionComponent<IHeaderProps> = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
 
+  const handleChangeLanguage = useCallback(
+    (locale: string) => {
+      router.push(router.asPath, router.asPath, { locale: locale });
+    },
+    [router],
+  );
+
   return (
     <HeaderWrapper>
-      <div className="logo" style={{ color: 'white', width: 200 }}>
-        {t('title')}
-      </div>
+      <div className="logo">{t('title')}</div>
       <Menu
+        className="nav-bar"
         theme="dark"
         mode="horizontal"
-        style={menuStyle}
         selectedKeys={[router.pathname]}
         selectable={false}
       >
@@ -76,9 +66,13 @@ const Header: FunctionComponent<IHeaderProps> = ({ children, title = '스토어�
           </Link>
         </Item>
       </Menu>
-      <Select className="language-container">
-        <Select.Option>한국어</Select.Option>
-        <Select.Option>영어</Select.Option>
+      <Select
+        className="language-container"
+        onChange={handleChangeLanguage}
+        defaultValue={router.locale}
+      >
+        <Select.Option value={'ko'}>{t('ko')}</Select.Option>
+        <Select.Option value={'en'}>{t('en')}</Select.Option>
       </Select>
     </HeaderWrapper>
   );
@@ -88,6 +82,18 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  padding: 0 40px;
+  background: #001529;
+
+  .logo {
+    color: white;
+    width: 260px;
+  }
+
+  .nav-bar {
+    display: flex;
+    width: 100%;
+  }
 
   .language-container {
     width: 100px;
