@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetStaticProps, InitialProps, NextPage } from 'next';
 import Link from 'next/link';
 
 import { User } from '../../interfaces';
@@ -6,13 +6,14 @@ import { sampleUserData } from '../../utils/sample-data';
 import Layout from '../../components/Layout';
 import List from '../../components/List';
 import DefaultLayout from '../../components/DefaultLayout/DefaultLayout';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-type Props = {
+interface IWithStaticProps extends InitialProps {
   items: User[];
-};
+}
 
-const WithStaticProps = ({ items }: Props) => (
-  <DefaultLayout>
+const WithStaticProps: NextPage<IWithStaticProps, InitialProps> = ({ items, title }) => (
+  <DefaultLayout title={title}>
     <h1>Users List</h1>
     <p>
       Example fetching data from inside <code>getStaticProps()</code>.
@@ -27,12 +28,17 @@ const WithStaticProps = ({ items }: Props) => (
   </DefaultLayout>
 );
 
-export const getStaticProps: GetStaticProps = async () => {
-  // Example for including static props in a Next.js function component page.
-  // Don't forget to include the respective types for any props passed into
-  // the component.
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const items: User[] = sampleUserData;
-  return { props: { items } };
+
+  return {
+    props: {
+      title: 'user 페이지',
+      ...(await serverSideTranslations(locale, ['common'])),
+      items,
+      // Will be passed to the page component as props
+    },
+  };
 };
 
 export default WithStaticProps;

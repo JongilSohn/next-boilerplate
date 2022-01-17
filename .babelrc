@@ -1,12 +1,22 @@
 {
-  "presets": ["next/babel"],
-  "plugins": [
+  "presets": [
     [
-      "styled-components",
+      "next/babel",
       {
-        "ssr": true,
-        "displayName": true,
-        "preprocess": false
+        "preset-react": {
+          "runtime": "automatic",
+          "importSource": "@emotion/react"
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    ["@emotion/babel-plugin"],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true
       }
     ]
   ]

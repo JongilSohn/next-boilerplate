@@ -1,15 +1,18 @@
 import React, { FunctionComponent, ReactNode, useMemo } from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Select } from 'antd';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
+// pages/index.js
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 // i18n
 // import { useTranslation } from '../../i18n';
 import { useTranslation } from 'next-i18next';
+import Header from 'components/Header';
 
 const {
-  Header,
   Content,
   // Sider
 } = Layout;
@@ -33,12 +36,10 @@ const menuStyle = {
 
 const DefaultLayout: FunctionComponent<IDefaultLayoutProps> = ({
   children,
-  title = 'This is the default title',
+  title = '스토어링크 Next',
 }) => {
   const { t } = useTranslation('common');
   const router = useRouter();
-
-  console.log(router.pathname);
 
   return (
     <Layout style={defaultStyle}>
@@ -50,34 +51,9 @@ const DefaultLayout: FunctionComponent<IDefaultLayoutProps> = ({
           content="minimum-scale=1, initial-scale=1, width=device-width, maximum-scale=1"
         />
       </Head>
-      <Header className="header" style={{ display: 'flex' }}>
-        <div className="logo" style={{ color: 'white', width: 200 }}>
-          {t('test')}
-        </div>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          style={menuStyle}
-          selectedKeys={[router.pathname]}
-          selectable={false}
-        >
-          <Item key={'/'}>
-            <Link href="/">
-              <a>Home</a>
-            </Link>
-          </Item>
-          <Item key={'/about'}>
-            <Link href="/about">
-              <a>About</a>
-            </Link>
-          </Item>
-          <Item key={'/users'}>
-            <Link href="/users">
-              <a>Users List</a>
-            </Link>
-          </Item>
-        </Menu>
-      </Header>
+      <Layout.Header className="header" style={{ display: 'flex' }}>
+        <Header />
+      </Layout.Header>
       <Layout>
         <Layout style={{ padding: '0 24px 24px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}></Breadcrumb>
@@ -95,5 +71,14 @@ const DefaultLayout: FunctionComponent<IDefaultLayoutProps> = ({
     </Layout>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default DefaultLayout;

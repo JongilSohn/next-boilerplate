@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import App, { AppProps, AppContext } from 'next/app';
 import Head from 'next/head';
-import '../styles/antd.less';
-import '../styles/globals.css';
-import 'antd/dist/antd.css';
+import '../styles/variables.less';
+
+// import '../styles/globals.css';
+// import 'antd/dist/antd.css';
 
 // i18n
 import { appWithTranslation } from 'next-i18next';
@@ -11,8 +12,11 @@ import { appWithTranslation } from 'next-i18next';
 import { RecoilRoot } from 'recoil';
 // swr
 import useSWR, { SWRConfig } from 'swr';
-import { Button } from 'antd';
-import DefaultLayout from '../components/DefaultLayout';
+
+// styles
+import { globalStyles } from '../styles/globals';
+import { ThemeProvider } from '@emotion/react';
+import theme from '../styles/theme';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   console.log(pageProps);
@@ -46,7 +50,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         }}
       >
         <RecoilRoot>
-          <Component {...pageProps} />
+          <ThemeProvider theme={theme}>
+            {globalStyles}
+            <Component {...pageProps} />
+          </ThemeProvider>
         </RecoilRoot>
       </SWRConfig>
     </React.Fragment>
